@@ -31,7 +31,6 @@ The Event Management Application allows users to create, manage, and share event
 - **Node.js**: Ensure you have Node.js installed. Download it [here](https://nodejs.org/).
 - **Python**: Ensure you have Python installed. Download it [here](https://www.python.org/).
 - **Django**: Install Django using pip: `pip install django`.
-- **PostgreSQL**: (Optional) For production, you may want to use PostgreSQL. Install it [here](https://www.postgresql.org/).
 
 ### **Installation**
 
