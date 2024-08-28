@@ -18,7 +18,7 @@ The Event Management Application allows users to create, manage, and share event
   - Invite others to events via email.
 
 - **Data Persistence**:
-  - User and event data are persisted in a relational database (e.g., PostgreSQL).
+  - User and event data are persisted in a relational database (e.g., SQLlite3).
 
 - **User Interface**:
   - Responsive and user-friendly interface.
