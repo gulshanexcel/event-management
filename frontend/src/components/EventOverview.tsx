@@ -159,12 +159,23 @@ export default function EventOverview() {
       <Modal isOpen={modal} onClose={resetModal}>
         <h1 className="w-full text-center font-bold text-2xl">Create Events</h1>
 
-        <Input type="text" size="medium" placeholder='Enter Title' className="mt-12" value={title} onChange={e => setTitle(e.target.value)} />
-        <Input type="textarea" size="medium" placeholder='Enter Description' className="mt-3" value={description} onChange={e => setDescription(e.target.value)} />
-        <Input type="date" size="medium" placeholder='Enter date' className="mt-3" value={date} onChange={e => setDate(e.target.value)} />
-        <Input type="text" size="medium" placeholder='Enter Location' className="mt-3" value={location} onChange={e => setLocation(e.target.value)}  />
-        <Input type="date" size="medium" placeholder='Reminder' className="mt-3" value={reminder} onChange={e => setReminder(e.target.value)} />
-        <Input type="textarea" size="medium" placeholder='Enter invitees' className="mt-3" value={invitees} onChange={(e) => setInvitees(e.target.value)} /> 
+        <label className='mt-12 font-bold ml-1 mb-2 block'>Title</label>
+        <Input type="text" size="medium" placeholder='Enter Title' value={title} onChange={e => setTitle(e.target.value)} />
+        
+        <label className='mt-3 font-bold ml-1 mb-2 block'>Description</label>
+        <Input type="textarea" size="medium" placeholder='Enter Description' value={description} onChange={e => setDescription(e.target.value)} />
+        
+        <label className='mt-3 font-bold ml-1 mb-2 block'>Date</label>
+        <Input type="date" size="medium" placeholder='Enter date' value={date} onChange={e => setDate(e.target.value)} />
+        
+        <label className='mt-3 font-bold ml-1 mb-2 block'>Location</label>
+        <Input type="text" size="medium" placeholder='Enter Location' value={location} onChange={e => setLocation(e.target.value)}  />
+        
+        <label className='mt-3 font-bold ml-1 mb-2 block'>Reminder time</label>
+        <Input type="datetime-local" size="medium" placeholder='Reminder' value={reminder} onChange={e => setReminder(e.target.value)} />
+        
+        <label className='mt-3 font-bold ml-1 mb-2 block'>Invitees emails (separated by comma)</label>
+        <Input type="textarea" size="medium" placeholder='Enter invitees' value={invitees} onChange={(e) => setInvitees(e.target.value)} /> 
  
         <Button disabled={loading === 'creating'} variant="primary" size="medium" className="mt-12 w-full" onClick={createEventHandle}>{updateId == -1 ? "Create" : "Update"} Event</Button>
       </Modal>

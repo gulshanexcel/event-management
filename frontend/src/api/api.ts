@@ -23,3 +23,16 @@ api.interceptors.request.use(
     }
 );
 
+// Global error handler, check if status code is 401 then redirect to login page and clear token
+api.interceptors.response.use(
+    (response) => {
+        return response;
+    },
+    (error) => {
+        if (error.response.status === 401) {
+            localStorage.removeItem('authToken');
+            window.location.href = '/auth/signin';
+        }
+        return Promise.reject(error);
+    }
+)
