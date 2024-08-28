@@ -3,30 +3,29 @@ import { useRouter } from "next/navigation";
 import { api } from "@/api/api";
 
 export default function Sidebar() {
-  const router = useRouter()
-  const [user, setUser] = useState<{ username?: string, email?: string }>({})
+  const router = useRouter();
+  const [user, setUser] = useState<{ username?: string, email?: string }>({});
 
-  const logoutuser = (e) => { 
-    e.preventDefault()
+  const logoutuser = (e) => {
+    e.preventDefault();
 
-    localStorage.setItem('authToken', "")
-    localStorage.removeItem('authToken')
-    router.push("/auth/signin")
-  }
+    localStorage.setItem("authToken", "");
+    localStorage.removeItem("authToken");
+    router.push("/auth/signin");
+  };
 
-  
   const getInfoOfCurrentLoggedInUser = () => {
-    api.get('/profile/').then((data) => {
-      setUser(data.data)
-    })
-  }
+    api.get("/profile/").then((data) => {
+      setUser(data.data);
+    });
+  };
 
   useEffect(() => {
-    getInfoOfCurrentLoggedInUser()
-  }, [])
+    getInfoOfCurrentLoggedInUser();
+  }, []);
 
   return (
-    <aside className="w-1/4 bg-gray-800 text-white p-6 flex flex-col justify-between">
+    <aside className="lg:w-1/4 bg-gray-800 text-white p-6 flex flex-col justify-between h-full w-full lg:h-screen">
       <div>
         <div className="mb-8 flex items-center space-x-4">
           <img
@@ -49,7 +48,6 @@ export default function Sidebar() {
                 <span>📅</span> <span>Events</span>
               </a>
             </li>
-            
           </ul>
         </nav>
       </div>

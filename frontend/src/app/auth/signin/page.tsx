@@ -42,7 +42,7 @@ const Page = () => {
 
     return (
         <div className="w-screen bg-gray-100 h-screen flex justify-center items-center">
-            <div className="w-1/2 py-12 max-w-[420px] bg-white p-4">
+            <div className="w-full mx-4 py-12 max-w-[420px] bg-white p-4">
                 <h1 className="text-3xl text-center font-bold">Sign in</h1>
                 <p className="text-center text-slate-600 mt-2">
                   Sign in to your account to continue

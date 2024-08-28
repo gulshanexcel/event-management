@@ -16,7 +16,6 @@ The Event Management Application allows users to create, manage, and share event
 
 - **Event Invitations**:
   - Invite others to events via email.
-  - Track invitation status (pending, accepted, rejected).
 
 - **Data Persistence**:
   - User and event data are persisted in a relational database (e.g., PostgreSQL).

@@ -9,7 +9,7 @@ const Page = () => {
 
     return (
         <div className="h-screen flex items-center justify-center bg-gray-200">
-            <div className="bg-white p-8 w-full max-w-[420px]">
+            <div className="bg-white p-8 w-full max-w-[420px] mx-4">
                 <h1 className="text-2xl font-bold text-center">
                     Invitations
                 </h1>
