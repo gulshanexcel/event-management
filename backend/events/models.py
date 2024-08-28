@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
+from django.utils import timezone
+from datetime import timedelta
 
 class Event(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -40,6 +42,15 @@ class Event(models.Model):
 
             self.save()
 
+    def send_reminder(self):
+        if self.reminder and timezone.now() >= self.reminder - timedelta(minutes=30):
+            send_mail(
+                f'Reminder: {self.title}',
+                f'Reminder for the event "{self.title}" which is scheduled on {self.date} at {self.location}.',
+                'from@example.com',
+                [self.user.email],
+                fail_silently=False,
+            )
 
     def validate_email(self, email):
         try:

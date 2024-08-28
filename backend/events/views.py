@@ -9,11 +9,10 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView 
 from rest_framework.permissions import IsAuthenticated
+from django.core.mail import send_mail
 from rest_framework import generics
-
-
-
 from django.shortcuts import get_object_or_404
+
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
@@ -86,8 +85,6 @@ class ProfileView(APIView):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
-    
-
 
 class InvitationResponseView(generics.GenericAPIView):
     def post(self, request, event_id):
@@ -107,4 +104,18 @@ class InvitationResponseView(generics.GenericAPIView):
             return Response({"detail": "Invalid response."}, status=status.HTTP_400_BAD_REQUEST)
 
         event.save()
+
+        # Notify the event creator
+        self.notify_creator(event, email, response)
+
         return Response({"detail": "Invitation status updated."}, status=status.HTTP_200_OK)
+
+    def notify_creator(self, event, email, response):
+        user_email = event.user.email
+        send_mail(
+            f'Invitation Response for {event.title}',
+            f'{email} has {response} your invitation for the event "{event.title}".',
+            'from@example.com',
+            [user_email],
+            fail_silently=False,
+        )
