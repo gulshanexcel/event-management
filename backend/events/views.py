@@ -120,34 +120,28 @@ class InvitationResponseView(generics.GenericAPIView):
             fail_silently=False,
         )
 
-class InvitationRedirectView(generics.GenericAPIView):
-    def get(self, request):
+class InvitationRedirectView(APIView):
+    def get(self, request, *args, **kwargs):
         user_id = request.query_params.get('userid')
         event_id = request.query_params.get('eventid')
-        response_status = request.query_params.get('status')
-        
-        if not all([user_id, event_id, response_status]):
-            return Response({"detail": "Missing parameters."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Get the event and user
-        event = get_object_or_404(Event, id=event_id)
-        user = get_object_or_404(User, id=user_id)
-        
-        # Update the invitation status
-        if response_status == 'accepted':
-            event.invitation_status[user.email] = 'Accepted'
-        elif response_status == 'declined':
-            event.invitation_status[user.email] = 'Declined'
-        else:
+        status = request.query_params.get('status')
+
+        try:
+            event = Event.objects.get(id=event_id, user__id=user_id)
+        except ObjectDoesNotExist:
+            return Response({"detail": "Event or User not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        if status not in ['accepted', 'declined']:
             return Response({"detail": "Invalid status."}, status=status.HTTP_400_BAD_REQUEST)
-        
+
+        email = request.user.email  # Assuming the user is logged in
+        if email not in event.invitation_status:
+            return Response({"detail": "Invitation not found for this email."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Update the invitation status in the database
+        event.invitation_status[email] = status.capitalize()
         event.save()
 
-        # Redirect to the frontend URL
-        frontend_url = (
-            f'http://localhost:3000/invitations?status={response_status}'
-            f'&event-title={event.title}'
-            f'&sender-username={event.user.username}'
-            f'&description={event.description}'
-        )
+        # Redirect to the frontend
+        frontend_url = f'http://localhost:3000/invitations?status={status}&event-title={event.title}&sender-username={event.user.username}&description={event.description}'
         return redirect(frontend_url)
