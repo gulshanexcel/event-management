@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { api } from "@/api/api";
 
 export default function Sidebar() {
   const router = useRouter()
+  const [user, setUser] = useState<{ username?: string, email?: string }>({})
 
   const logoutuser = (e) => { 
     e.preventDefault()
@@ -10,6 +13,17 @@ export default function Sidebar() {
     localStorage.removeItem('authToken')
     router.push("/auth/signin")
   }
+
+  
+  const getInfoOfCurrentLoggedInUser = () => {
+    api.get('/profile/').then((data) => {
+      setUser(data.data)
+    })
+  }
+
+  useEffect(() => {
+    getInfoOfCurrentLoggedInUser()
+  }, [])
 
   return (
     <aside className="w-1/4 bg-gray-800 text-white p-6 flex flex-col justify-between">
@@ -21,8 +35,8 @@ export default function Sidebar() {
             className="w-14 h-14 rounded-full"
           />
           <div>
-            <h3 className="text-xl font-semibold">Events</h3>
-            <p className="text-sm text-gray-400">info@eventsphere.com</p>
+            <h3 className="text-xl font-semibold">{user.username}</h3>
+            <p className="text-sm text-gray-400">{user.email}</p>
           </div>
         </div>
         <nav>
