@@ -46,14 +46,14 @@ The Event Management Application allows users to create, manage, and share event
      ```bash
      cd backend
      ```
-   - Create a virtual environment and activate it:
-     ```bash
-     python -m venv venv
-     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-     ```
+
    - Install the dependencies:
      ```bash
      pip install -r requirements.txt
+     ```
+   - Make migrations
+     ```bash
+     python manage.py makemigrations
      ```
    - Apply migrations:
      ```bash
@@ -84,9 +84,11 @@ Create a `.env` file in the `backend` and `frontend` directories and add the fol
 
 - **Backend (`backend/.env`)**:
   ```env
-  SECRET_KEY=your_django_secret_key
+  SECRET_KEY=your-secret-key
   DEBUG=True
-  DATABASE_URL=your_database_url  # Optional for PostgreSQL
+  ALLOWED_HOSTS=localhost,127.0.0.1
+  EMAIL_HOST_USER=
+  EMAIL_HOST_PASSWORD=
   ```
 
 - **Frontend (`frontend/.env.local`)**:
@@ -100,34 +102,12 @@ Create a `.env` file in the `backend` and `frontend` directories and add the fol
   - Access the frontend at `http://localhost:3000`.
   - Register or log in to start managing your events.
   - Use the event management dashboard to create, view, update, and delete events.
-  - Invite others to your events via email and track their responses.
+  - Invite others to your events via email.
 
 - **Backend**:
   - The API is available at `http://localhost:8000/api`.
   - The admin interface can be accessed at `http://localhost:8000/admin`.
 
-### **Testing**
-
-- **Backend**:
-  - Run Django tests:
-    ```bash
-    python manage.py test
-    ```
-- **Frontend**:
-  - Run Next.js tests:
-    ```bash
-    npm test
-    ```
-
-### **Deployment**
-
-- **Backend**:
-  - Deploy on a cloud platform like Heroku or DigitalOcean.
-  - Set environment variables for production.
-
-- **Frontend**:
-  - Deploy on Vercel or Netlify.
-  - Ensure the API URL in `.env.local` is set to your backend's production URL.
 
 ## **Contributing**
 
