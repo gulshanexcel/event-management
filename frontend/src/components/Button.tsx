@@ -5,6 +5,7 @@ interface ButtonProps {
   onClick?: () => void;
   className?: string;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean
 }
 
 const Button = ({
@@ -14,6 +15,7 @@ const Button = ({
   onClick,
   className = '',
   type = 'button',
+  disabled
 }: ButtonProps) => {
   const variantClass = variant === 'primary'
     ? 'bg-blue-600 text-white hover:bg-blue-500'
@@ -35,7 +37,8 @@ const Button = ({
   return (
     <button
       type={type}
-      className={`rounded-lg active:scale-95 font-semibold transition-transform duration-200 ${variantClass} ${sizeClass} ${className}`}
+      disabled={disabled}
+      className={`rounded-lg active:scale-95 font-semibold transition-transform duration-200 ${variantClass} ${sizeClass} ${className} disabled:opacity-50`}
       onClick={onClick}
     >
       {children}

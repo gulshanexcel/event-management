@@ -2,21 +2,42 @@
 
 import { FormEventHandler, useState } from "react"
 import Button from "@/components/Button"
+import Alert from "@/components/Alert"
 import Input from "@/components/Input"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { api } from '../../../api/api'
 
 const Page = () => {
-    const [name, setName] = useState("")
+    const [username, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
+    
+    const [alert, setAlert] = useState({ success: false, message: ""})
+
+    const router = useRouter()
 
     const handleSignIn: FormEventHandler<HTMLFormElement> = (event: any) => {
         event.preventDefault();
 
-        console.log({
-            name,
+        setLoading(true)
+        api.post('/auth/register/', {
+            username,
             email,
             password
+        }).then((data) => {
+            setAlert({ message: "Account is created successfully.", success: true })
+            setTimeout(() => {
+                router.push("/auth/signin")
+            }, 1000)
+        }).catch((err) => {
+           setAlert({ message: err.message, success: false })
+        }).finally(() => {
+            setName('');
+            setEmail('');
+            setPassword('');
+            setLoading(false)
         })
     }
 
@@ -29,11 +50,12 @@ const Page = () => {
                 </p>
 
                 <form onSubmit={handleSignIn} className="mt-10 w-full px-4" action={""} method="POST">
-                    <Input value={name} onChange={(e) => setName(e.target.value)} type="text" size="large" placeholder="Enter your name" />
+                    {alert.message && <Alert message={alert.message} type={alert.success ? "success" : "error"} />}
+                    <Input value={username} onChange={(e) => setName(e.target.value)} type="text" size="large" placeholder="Enter your name" />
                     <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" size="large" placeholder="Enter your email" className="mt-3" />
                     <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" size="large" placeholder="Enter your password" className="mt-3" />
 
-                    <Button type="submit" size="large" className="mt-10 w-full">
+                    <Button disabled={loading} type="submit" size="large" className="mt-10 w-full">
                         Sign up
                     </Button>
                 </form>

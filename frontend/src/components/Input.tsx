@@ -1,6 +1,6 @@
 import React from 'react';
 interface InputProps {
-  type: 'textarea' | 'select' | 'email' | 'text' | 'number' | 'password';
+  type: 'textarea' | 'select' | 'email' | 'text' | 'date' | 'number' | 'password';
   variant?: 'primary' | 'secondary';
   size?: 'small' | 'medium' | 'large';
   options?: string[]; // Used for the select input type

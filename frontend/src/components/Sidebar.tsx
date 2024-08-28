@@ -1,4 +1,16 @@
+import { useRouter } from "next/navigation";
+
 export default function Sidebar() {
+  const router = useRouter()
+
+  const logoutuser = (e) => { 
+    e.preventDefault()
+
+    localStorage.setItem('authToken', "")
+    localStorage.removeItem('authToken')
+    router.push("/auth/signin")
+  }
+
   return (
     <aside className="w-1/4 bg-gray-800 text-white p-6 flex flex-col justify-between">
       <div>
@@ -9,7 +21,7 @@ export default function Sidebar() {
             className="w-14 h-14 rounded-full"
           />
           <div>
-            <h3 className="text-xl font-semibold">Event Overview</h3>
+            <h3 className="text-xl font-semibold">Events</h3>
             <p className="text-sm text-gray-400">info@eventsphere.com</p>
           </div>
         </div>
@@ -17,56 +29,20 @@ export default function Sidebar() {
           <ul>
             <li className="mb-6">
               <a
-                href="#"
+                href="/dashboard"
                 className="flex items-center space-x-3 p-2 text-lg font-medium rounded-lg bg-gray-700 hover:bg-gray-600 transition"
               >
-                <span>📅</span> <span>Event Overview</span>
+                <span>📅</span> <span>Events</span>
               </a>
             </li>
-            <li className="mb-6">
-              <a
-                href="#"
-                className="flex items-center space-x-3 p-2 text-lg font-medium rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-              >
-                <span>📚</span> <span>Event Classes</span>
-              </a>
-            </li>
-            <li className="mb-6">
-              <a
-                href="#"
-                className="flex items-center space-x-3 p-2 text-lg font-medium rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-              >
-                <span>🎓</span> <span>Event Grades</span>
-              </a>
-            </li>
-            <li className="mb-6">
-              <a
-                href="#"
-                className="flex items-center space-x-3 p-2 text-lg font-medium rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-              >
-                <span>🎤</span> <span>Event Speakers</span>
-              </a>
-            </li>
-            <li className="mb-6">
-              <a
-                href="#"
-                className="flex items-center space-x-3 p-2 text-lg font-medium rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-              >
-                <span>📝</span> <span>Event Notes</span>
-              </a>
-            </li>
+            
           </ul>
         </nav>
       </div>
       <div>
         <a
           href="#"
-          className="flex items-center space-x-3 p-2 text-lg font-medium rounded-lg bg-gray-700 hover:bg-gray-600 transition"
-        >
-          <span>⚙️</span> <span>Event Settings</span>
-        </a>
-        <a
-          href="#"
+          onClick={logoutuser}
           className="flex items-center space-x-3 p-2 text-lg font-medium rounded-lg bg-gray-700 hover:bg-gray-600 transition mt-4"
         >
           <span>🔓</span> <span>Sign Out</span>
