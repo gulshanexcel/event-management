@@ -1,3 +1,4 @@
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from rest_framework import viewsets, permissions, filters
 from .models import Event
 from .serializers import EventSerializer, UserSerializer
@@ -121,27 +122,28 @@ class InvitationResponseView(generics.GenericAPIView):
         )
 
 class InvitationRedirectView(APIView):
-    def get(self, request, *args, **kwargs):
-        user_id = request.query_params.get('userid')
-        event_id = request.query_params.get('eventid')
-        status = request.query_params.get('status')
+    def get(self, request):
+        user_id = request.GET.get('userid')
+        event_id = request.GET.get('eventid')
+        status = request.GET.get('status')
 
-        try:
-            event = Event.objects.get(id=event_id, user__id=user_id)
-        except ObjectDoesNotExist:
-            return Response({"detail": "Event or User not found."}, status=status.HTTP_404_NOT_FOUND)
+        # Validation checks
+        if not user_id or not event_id or not status:
+            return HttpResponseBadRequest("Missing required parameters.")
 
+        user = get_object_or_404(User, id=user_id)
+        event = get_object_or_404(Event, id=event_id)
+
+        # Validate the status
         if status not in ['accepted', 'declined']:
-            return Response({"detail": "Invalid status."}, status=status.HTTP_400_BAD_REQUEST)
-
-        email = request.user.email  # Assuming the user is logged in
-        if email not in event.invitation_status:
-            return Response({"detail": "Invitation not found for this email."}, status=status.HTTP_404_NOT_FOUND)
+            return HttpResponseBadRequest("Invalid status.")
 
         # Update the invitation status in the database
-        event.invitation_status[email] = status.capitalize()
-        event.save()
+        email = user.email
+        if email in event.invitation_status:
+            event.invitation_status[email] = status.capitalize()
+            event.save()
 
-        # Redirect to the frontend
-        frontend_url = f'http://localhost:3000/invitations?status={status}&event-title={event.title}&sender-username={event.user.username}&description={event.description}'
-        return redirect(frontend_url)
+        # Construct the redirect URL
+        redirect_url = f'http://localhost:3000/invitations?status={status}&event-title={event.title}&sender-username={user.username}&description={event.description}'
+        return HttpResponseRedirect(redirect_url)
