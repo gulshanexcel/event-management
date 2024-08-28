@@ -2,9 +2,11 @@
 
 import Button from "@/components/Button"
 import { useSearchParams } from "next/navigation"
+import { useRouter } from "next/router"
 
 const Page = () => {
     const query = useSearchParams()
+    const router = useRouter()
 
     return (
         <div className="h-screen flex items-center justify-center bg-gray-200">
@@ -18,7 +20,7 @@ const Page = () => {
                 <p className="mt-12">Event: {query.get('event-title')}</p>
                 <p className="mt-2">Description: {query.get('description')}</p>
             
-                <Button className="w-full mt-12" variant="secondary">Go to home</Button>
+                <Button className="w-full mt-12" variant="secondary" onClick={() => router.push("/")}>Go to home</Button>
             </div>
         </div>
     )
