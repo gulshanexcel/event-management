@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.core.mail import send_mail
 from rest_framework import generics
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -119,3 +119,35 @@ class InvitationResponseView(generics.GenericAPIView):
             [user_email],
             fail_silently=False,
         )
+
+class InvitationRedirectView(generics.GenericAPIView):
+    def get(self, request):
+        user_id = request.query_params.get('userid')
+        event_id = request.query_params.get('eventid')
+        response_status = request.query_params.get('status')
+        
+        if not all([user_id, event_id, response_status]):
+            return Response({"detail": "Missing parameters."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Get the event and user
+        event = get_object_or_404(Event, id=event_id)
+        user = get_object_or_404(User, id=user_id)
+        
+        # Update the invitation status
+        if response_status == 'accepted':
+            event.invitation_status[user.email] = 'Accepted'
+        elif response_status == 'declined':
+            event.invitation_status[user.email] = 'Declined'
+        else:
+            return Response({"detail": "Invalid status."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        event.save()
+
+        # Redirect to the frontend URL
+        frontend_url = (
+            f'http://localhost:3000/invitations?status={response_status}'
+            f'&event-title={event.title}'
+            f'&sender-username={event.user.username}'
+            f'&description={event.description}'
+        )
+        return redirect(frontend_url)

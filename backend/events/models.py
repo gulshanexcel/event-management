@@ -24,8 +24,8 @@ class Event(models.Model):
                     self.invitation_status[email] = 'Invalid Email'
                     continue
                 try:
-                    accept_link = f'http://yourdomain.com/events/{self.id}/respond/?email={email}&response=accepted'
-                    decline_link = f'http://yourdomain.com/events/{self.id}/respond/?email={email}&response=declined'
+                    accept_link = f'http://localhost:8000/invites?userid={self.user.id}&eventid={self.id}&status=accepted'
+                    decline_link = f'http://localhost:8000/invites?userid={self.user.id}&eventid={self.id}&status=declined'
 
                     send_mail(
                         f'You are invited to {self.title}',
