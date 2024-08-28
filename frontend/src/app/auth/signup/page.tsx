@@ -51,9 +51,9 @@ const Page = () => {
 
                 <form onSubmit={handleSignIn} className="mt-10 w-full px-4" action={""} method="POST">
                     {alert.message && <Alert message={alert.message} type={alert.success ? "success" : "error"} />}
-                    <Input value={username} onChange={(e) => setName(e.target.value)} type="text" size="large" placeholder="Enter your name" />
-                    <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" size="large" placeholder="Enter your email" className="mt-3" />
-                    <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" size="large" placeholder="Enter your password" className="mt-3" />
+                    <Input value={username} onChange={(e) => setName(e.target.value.trim().replace(/\s*/g, ''))} type="text" size="large" placeholder="Username" />
+                    <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" size="large" placeholder="Email" className="mt-3" />
+                    <Input value={password} onChange={(e) => setPassword(e.target.value)} type="password" size="large" placeholder="Password" className="mt-3" />
 
                     <Button disabled={loading} type="submit" size="large" className="mt-10 w-full">
                         Sign up
