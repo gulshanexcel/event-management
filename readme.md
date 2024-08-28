@@ -116,7 +116,3 @@ Feel free to fork the repository and submit pull requests. For major changes, pl
 ## **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## **Contact**
-
-For any questions or suggestions, please contact [your_email@example.com](mailto:your_email@example.com).
